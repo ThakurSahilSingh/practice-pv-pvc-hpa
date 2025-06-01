@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: flask-hpa
+  name: flask-hpa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-hpa
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: flask-hpa
+    spec:
+      containers:
+      - image: sahil0824/flask-hpa:latest
+        name: sahil0824
+        volumeMounts:
+          - mountPath: /app/data/
+            name: flask-storage
+        resources:
+          requests:
+            cpu: '100m'
+          limits:
+            cpu: '200m'
+      volumes:
+        - name: flask-storage
+          persistentVolumeClaim:
+            claimName: flask-pvc
